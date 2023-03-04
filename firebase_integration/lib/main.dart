@@ -229,5 +229,3 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
     );
   }
 }
-
-
