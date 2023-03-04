@@ -80,6 +80,66 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
     );
   }
 
+  Widget buildBody(BuildContext context){
+    return StreamBuilder<QuerySnapshot>(
+      stream: getAllBooks(),
+      builder: (context, snapshot) {
+        if(snapshot.hasError){
+          return Text('Error ${snapshot.error}');
+        }
+        if(snapshot.hasData){
+          print("Dcument -> ${snapshot.data?.docs.length}");
+          return buildList(context, snapshot.data?.docs);
+        }
+        return const SizedBox();
+      },
+    );
+  }
+
+  Widget buildList(BuildContext context, List<QueryDocumentSnapshot<Object?>>? snapshot){
+    return ListView(
+      children: snapshot!.map((data) => listItemBuilder(context, data)).toList(),
+    );
+  }
+
+  Widget listItemBuilder(BuildContext context, DocumentSnapshot data){
+    final book = Book.fromSnapshot(data);
+    return Padding(
+      key: ValueKey(book.bookName),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+      child: Container(
+        child: Column(
+          children: [
+            Text(book.bookName),
+            Text(book.authorName),
+            IconButton(
+              onPressed: (){
+                deleteBook(book);
+              },
+              icon: Icon(Icons.delete, color: Colors.red,),
+            ),
+            IconButton(
+              onPressed: (){
+                setUpdateUI(book);
+              },
+              icon: Icon(Icons.update, color: Colors.green,),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  setUpdateUI(Book book){
+    bookNameController.text = book.bookName;
+    authorController.text = book.authorName;
+    setState(() {
+      isEditing = true;
+      textFieldVisibility = true;
+      currentBook = book;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
