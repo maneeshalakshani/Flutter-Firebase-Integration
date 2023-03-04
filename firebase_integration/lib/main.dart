@@ -13,9 +13,7 @@ class BookApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "test",
-      home: Scaffold(
-        body: Text("sf"),
-      ),
+      home: BookFireBaseDemo(),
     );
   }
 }
@@ -161,7 +159,62 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text("Book List"),
+        actions: [
+          IconButton(
+            onPressed: (){
+              setState(() {
+                textFieldVisibility = !textFieldVisibility;
+              });
+            },
+            icon: const Icon(Icons.add, color: Colors.yellow),
+          )
+        ],
+      ),
+      body: Container(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            textFieldVisibility
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: bookNameController,
+                        decoration: const InputDecoration(
+                          labelText: "Book Name",
+                        ),
+                      ),
+                      TextFormField(
+                        controller: authorController,
+                        decoration: const InputDecoration(
+                          labelText: "Author Name",
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 5, bottom: 5),
+                        child: button(),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
+            Text("Books"),
+            SizedBox(
+              height: 20,
+            ),
+            Flexible(
+              child: buildBody(context),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
