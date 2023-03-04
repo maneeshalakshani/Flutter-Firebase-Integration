@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import './models/book.dart';
 
-void main() => runApp(BookApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(BookApp());
+}
 
 class BookApp extends StatelessWidget {
   const BookApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "test",
       home: BookFireBaseDemo(),
     );
   }
@@ -34,7 +38,7 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
   String fireStoreCollectionName = "Books";
   late Book currentBook;
 
-  getAllBooks(){
+  getAllBooks() {
     return FirebaseFirestore.instance.collection(fireStoreCollectionName).snapshots();
   }
 
@@ -89,14 +93,18 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
           print("Dcument -> ${snapshot.data?.docs.length}");
           return buildList(context, snapshot.data?.docs);
         }
-        return const SizedBox();
+        // return const SizedBox();
+        return buildList(context, snapshot.data?.docs);
       },
     );
   }
 
-  Widget buildList(BuildContext context, List<QueryDocumentSnapshot<Object?>>? snapshot){
-    return ListView(
-      children: snapshot!.map((data) => listItemBuilder(context, data)).toList(),
+  Widget buildList(BuildContext context, List<DocumentSnapshot>? snapshot){
+    return ListView.builder(
+      itemCount: snapshot!.length,
+      itemBuilder: (context, index){
+        return listItemBuilder(context, snapshot[index]);
+      },
     );
   }
 
@@ -106,6 +114,9 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
       key: ValueKey(book.bookName),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 3),
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.yellow,
+        ),
         child: Column(
           children: [
             Text(book.bookName),
@@ -159,6 +170,7 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
 
   @override
   Widget build(BuildContext context) {
+    print(getAllBooks());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
