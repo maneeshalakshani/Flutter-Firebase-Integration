@@ -13,7 +13,7 @@
   - Android -> build.gradle
     - classpath within dependencied in middle
   - Android -> app -> build.gradle
-    - id 'com.google.gms.google-services' (apply insted of id)
+    - id 'com.google.gms.google-services' (apply plugin insted of id)
   - Click Next -> Continue to console  
   
   ### Create Database
