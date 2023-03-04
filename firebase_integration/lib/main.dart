@@ -140,6 +140,25 @@ class _BookFireBaseDemoState extends State<BookFireBaseDemo> {
     });
   }
 
+  button(){
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () {
+          if(isEditing == true){
+            updateIfEditing();
+          }else{
+            addBook();
+          }
+          setState(() {
+            textFieldVisibility = false;
+          });
+        },
+        child: Text(isEditing ? "Update" : "Add"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container();
