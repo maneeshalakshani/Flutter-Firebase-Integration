@@ -21,3 +21,11 @@
   - Build -> Firestore database -> Create Database
   - select start in test mode
   - Next -> Enable
+
+### Flutter Firebase Auhentication
+
+#### Dependencies
+  - firebase_auth
+  
+#### DB Setup
+  - Build -> Authentication -> Get Started -> Email/Password -> Enable -> Save
