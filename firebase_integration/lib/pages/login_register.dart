@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget submitButon(BuildContext context){
     return ElevatedButton(
       onPressed: (){
-        isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword;
+        isLogin ? signInWithEmailAndPassword() : createUserWithEmailAndPassword();
       },
       child: Text(isLogin ? "Login" : "Register"),
     );
